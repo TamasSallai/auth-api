@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '6543:5432'
+    volumes:
+      - postgres:/data/postgres
+    restart: unless-stopped
+
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+
+volumes:
+  postgres:
