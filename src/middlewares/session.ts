@@ -2,9 +2,9 @@ import session from 'express-session'
 import { createClient } from 'redis'
 import RedisStore from 'connect-redis'
 
-const REDIS_URI = process.env.REDIS_URI
-const REDIS_PORT = process.env.REDIS_PORT
-const SESSION_SECRET = process.env.SESSION_SECRET
+const REDIS_URI = process.env.REDIS_URI || 'redis'
+const REDIS_PORT = process.env.REDIS_PORT || 6379
+const SESSION_SECRET = process.env.SESSION_SECRET || 'secret'
 
 const redisClient = createClient({
   url: `redis://${REDIS_URI}:${REDIS_PORT}`,
