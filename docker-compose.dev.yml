@@ -4,11 +4,15 @@ services:
   app:
     build:
       context: .
-      target: production
+      target: development
     depends_on:
       - postgres
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - 8080:8080
+    command: npm run dev
 
   postgres:
     image: postgres:16
