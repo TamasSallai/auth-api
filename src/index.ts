@@ -1,10 +1,12 @@
 import 'dotenv/config.js'
+import cors from 'cors'
 import express from 'express'
 import session from './middlewares/session'
 import authRouter from './modules/auth/auth.router'
 
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 app.use(session)
 app.use('/api/auth', authRouter)
