@@ -3,10 +3,9 @@ declare global {
     interface ProcessEnv {
       PORT: string
       DATABASE_URL: string
-      REDIS_URI: string
-      REDIS_PORT: number
+      REDIS_URL: string
       SESSION_SECRET: string
-      ACCESS_TOKEN_SECRET: string
+      CORS_ORIGIN: string
     }
   }
 }
