@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
-import { createUser, findUserByEmail } from './auth.service'
+import { createUser, findUserByEmail, findUserById } from './auth.service'
 import { LoginRequest, RegisterRequest } from './auth.schema'
 
-export const loginHandler = async (
+export const login = async (
   req: Request<{}, {}, LoginRequest['body']>,
   res: Response
 ) => {
@@ -35,14 +35,14 @@ export const loginHandler = async (
       data: user,
     })
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       success: false,
       error,
     })
   }
 }
 
-export const registerHandler = async (
+export const register = async (
   req: Request<{}, {}, RegisterRequest['body']>,
   res: Response
 ) => {
@@ -56,7 +56,25 @@ export const registerHandler = async (
       data: { user },
     })
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
+      success: false,
+      error,
+    })
+  }
+}
+
+export const me = async (req: Request, res: Response) => {
+  try {
+    const userId = req.session.userId as string
+
+    const user = await findUserById(userId)
+
+    return res.status(200).send({
+      success: true,
+      data: { user },
+    })
+  } catch (error) {
+    return res.status(500).send({
       success: false,
       error,
     })
