@@ -1,15 +1,6 @@
 version: '3.4'
 
 services:
-  app:
-    build:
-      context: .
-      target: production
-    depends_on:
-      - postgres
-    ports:
-      - 8080:8080
-
   postgres:
     image: postgres:16
     environment:
@@ -18,9 +9,13 @@ services:
     volumes:
       - postgres:/data/postgres
     restart: unless-stopped
+    ports:
+      - 5432:5432
 
   redis:
     image: redis
+    ports:
+      - 6379:6379
 
 volumes:
   postgres:
