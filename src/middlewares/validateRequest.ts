@@ -18,7 +18,7 @@ const validateRequest =
           errors: error.errors,
         })
       }
-      next(error)
+      return next(error)
     }
   }
 
