@@ -32,7 +32,7 @@ export const login = async (
 
     return res.status(200).send({
       success: true,
-      data: user,
+      data: { user },
     })
   } catch (error) {
     return res.status(500).send({
@@ -50,6 +50,8 @@ export const register = async (
     const { name, email, password } = req.body
     const passwordHash = await bcrypt.hash(password, 10)
     const user = await createUser(name, email, passwordHash)
+
+    req.session.userId = user.id
 
     return res.status(200).send({
       success: true,
