@@ -3,6 +3,7 @@ import cors from 'cors'
 import express from 'express'
 import session from './middlewares/session'
 import authRouter from './modules/auth/auth.router'
+import errorHandler from './middlewares/errorHandler'
 
 const app = express()
 
@@ -15,8 +16,9 @@ app.use(
 app.use(express.json())
 app.use(session)
 app.use('/api/auth', authRouter)
+app.use(errorHandler)
 
-const port = process.env.PORT
-app.listen(port, () =>
-  console.log(`Server is running on http://localhost:${port}`)
+const PORT = process.env.PORT
+app.listen(PORT, () =>
+  console.log(`Server is running on http://localhost:${PORT}`)
 )
