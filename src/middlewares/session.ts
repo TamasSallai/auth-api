@@ -13,6 +13,7 @@ const redisStore = new RedisStore({
 })
 
 const sessionMiddleware = session({
+  name: 'qid',
   store: redisStore,
   resave: false,
   saveUninitialized: false,
