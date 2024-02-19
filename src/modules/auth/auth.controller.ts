@@ -15,9 +15,15 @@ export const register = async (
 
     const user = await createUser(name, email, passwordHash)
 
-    req.session.userId = user.id
+    const sessionUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    }
 
-    return res.status(200).send({ success: true, user })
+    req.session.user = sessionUser
+
+    return res.status(200).send({ success: true, user: sessionUser })
   } catch (error) {
     next(error)
   }
@@ -55,9 +61,15 @@ export const login = async (
       })
     }
 
-    req.session.userId = user.id
+    const sessionUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    }
 
-    return res.status(200).send({ success: true, user })
+    req.session.user = sessionUser
+
+    return res.status(200).send({ success: true, user: sessionUser })
   } catch (error) {
     next(error)
   }
@@ -65,9 +77,7 @@ export const login = async (
 
 export const me = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session.userId as string
-
-    const user = await findUserById(userId)
+    const user = req.session.user
 
     return res.status(200).send({ success: true, user })
   } catch (error) {
@@ -84,9 +94,9 @@ export const logout = async (
     if (error) {
       next(error)
     }
-    res.clearCookie('sid')
     return res
       .status(200)
+      .clearCookie('sid')
       .send({ success: true, message: 'Logged out successfully.' })
   })
 }
