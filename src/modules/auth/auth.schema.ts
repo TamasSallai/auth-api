@@ -18,3 +18,11 @@ export const registerRequestSchema = z.object({
 })
 
 export type RegisterRequest = z.infer<typeof registerRequestSchema>
+
+export const verifyRequestSchema = z.object({
+  params: z.object({
+    token: z.string(),
+  }),
+})
+
+export type VerifyRequest = z.infer<typeof verifyRequestSchema>

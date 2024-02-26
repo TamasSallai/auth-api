@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import prisma from '../../prisma'
 
 export const createUser = async (
@@ -27,5 +28,15 @@ export const findUserById = async (id: string) => {
     where: {
       id,
     },
+  })
+}
+
+export const updateUserById = async (
+  id: string,
+  data: Prisma.UserUpdateInput
+) => {
+  return prisma.user.update({
+    where: { id },
+    data,
   })
 }
