@@ -7,6 +7,7 @@ declare global {
       REDIS_URL: string
       SESSION_SECRET: string
       EMAIL_SECRET: string
+      EMAIL_SENDER: string
       SENDGRID_API_KEY: string
     }
   }
