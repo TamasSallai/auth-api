@@ -33,6 +33,7 @@ const errorHandler = (
     })
   }
 
+  console.log(error)
   return res.status(500).send({
     success: false,
     error: {
