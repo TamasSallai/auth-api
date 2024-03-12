@@ -10,12 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OauthProvider {
+  GOOGLE
+  GITHUB
+  LINKEDIN
+}
+
 model User {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  password   String
-  isVerified Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id            String         @id @default(uuid())
+  email         String         @unique
+  displayName   String
+  firstName     String?
+  lastName      String?
+  password      String?
+  oauthProvider OauthProvider?
+  oauthId       String?
+  isVerified    Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }

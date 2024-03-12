@@ -3,6 +3,7 @@ import cors from 'cors'
 import express from 'express'
 import session from './middlewares/session'
 import authRouter from './modules/auth/auth.router'
+import userRouter from './modules/user/user.router'
 import errorHandler from './middlewares/errorHandler'
 
 const app = express()
@@ -15,6 +16,7 @@ app.use(
 )
 app.use(express.json())
 app.use(session)
+app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
 app.use(errorHandler)
 
