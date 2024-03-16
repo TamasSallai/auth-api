@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-// import sendMail from '../../utils/mailer'
 import sg from '../../utils/sendgrid'
 import { LoginRequest, RegisterRequest, VerifyRequest } from './auth.schema'
 import {
@@ -10,6 +9,7 @@ import {
   findUserById,
   updateUserById,
 } from './auth.service'
+import userService from '../user/user.service'
 
 export const register = async (
   req: Request<{}, {}, RegisterRequest['body']>,
@@ -59,7 +59,7 @@ export const login = async (
   try {
     const { email, password } = req.body
 
-    const user = await findUserByEmail(email)
+    const user = await userService.findOneByEmail(email)
 
     if (!user) {
       return res.status(401).send({
@@ -71,6 +71,15 @@ export const login = async (
       })
     }
 
+    if (user.oauthProvider) {
+      return res.status(401).send({
+        success: false,
+        error: {
+          status: 'unauthorized_error',
+          message: `Log in with your ${user.oauthProvider} account`,
+        },
+      })
+    }
     const isCorrectPassword = await bcrypt.compare(password, user.password)
 
     if (!isCorrectPassword) {
