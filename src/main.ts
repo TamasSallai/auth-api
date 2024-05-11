@@ -1,6 +1,6 @@
 import fastify, { FastifyServerOptions } from 'fastify'
 import closeWithGrace from 'close-with-grace'
-import authRouter from './modules/auth/auth.route'
+import authRouter from './modules/auth/auth.router'
 
 const opts: FastifyServerOptions = { logger: true }
 if (process.stdout.isTTY) {
