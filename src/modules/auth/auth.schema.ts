@@ -11,6 +11,8 @@ export const loginBodySchema = Type.Object(
 export const registerBodySchema = Type.Object(
   {
     displayName: Type.String(),
+    firstName: Type.Optional(Type.String()),
+    lastName: Type.Optional(Type.String()),
     email: Type.String({ format: 'email' }),
     password: Type.String({ minLength: 6 }),
   },
