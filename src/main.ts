@@ -14,6 +14,13 @@ const app = fastify(opts)
 
 app.register(authRouter, { prefix: '/api/auth' })
 
+app.setErrorHandler(async (err, _, reply) => {
+  return reply.status(err.statusCode || 500).send({
+    success: false,
+    error: err,
+  })
+})
+
 const host = process.env.HOST || 'localhost'
 const port = parseInt(process.env.PORT || '3000')
 app.listen({ host, port }, (err) => {
