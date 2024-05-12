@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cookie": "^9.3.1",
     "@fastify/error": "^3.4.1",
+    "@fastify/session": "^10.8.0",
     "@prisma/client": "^5.13.0",
     "@sinclair/typebox": "^0.32.29",
     "bcrypt": "^5.1.1",
