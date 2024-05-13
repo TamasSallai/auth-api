@@ -1,8 +1,13 @@
 import fastify, { FastifyServerOptions } from 'fastify'
-import closeWithGrace from 'close-with-grace'
-import authRouter from './modules/auth/auth.router'
 import fastifyCookie from '@fastify/cookie'
 import fastifySession from '@fastify/session'
+import closeWithGrace from 'close-with-grace'
+import Redis from 'ioredis'
+import RedisStore from 'connect-redis'
+import authRouter from './modules/auth/auth.router'
+
+const redisClient = new Redis(process.env.REDIS_URL)
+const redisStore = new RedisStore({ client: redisClient })
 
 const opts: FastifyServerOptions = { logger: true }
 if (process.stdout.isTTY) {
@@ -13,16 +18,16 @@ if (process.stdout.isTTY) {
   }
 }
 const app = fastify(opts)
+
 app.register(fastifyCookie)
 app.register(fastifySession, {
-  secret:
-    process.env.COOKIE_SECRET ||
-    'a secret with minimum length of 32 characters',
+  secret: process.env.COOKIE_SECRET,
+  store: redisStore,
   cookie: {
     httpOnly: true,
-    maxAge: parseInt(process.env.COOKE_MAX_AGE || '86400'), // 24 hour is seconds
-    sameSite: 'lax',
+    maxAge: parseInt(process.env.COOKIE_TTL),
     secure: false,
+    sameSite: 'lax',
   },
 })
 app.register(authRouter, { prefix: '/api/auth' })
@@ -34,8 +39,8 @@ app.setErrorHandler(async (err, _, reply) => {
   })
 })
 
-const host = process.env.HOST || 'localhost'
-const port = parseInt(process.env.PORT || '3000')
+const host = process.env.HOST
+const port = parseInt(process.env.PORT)
 app.listen({ host, port }, (err) => {
   if (err) {
     app.log.error(err)
