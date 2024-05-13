@@ -79,7 +79,7 @@ const authRouter: FastifyPluginAsync = async (app) => {
   app.get('/logout', async (req, reply) => {
     await req.session.destroy()
 
-    return reply.send({
+    return reply.clearCookie('sessionId').send({
       success: true,
       message: 'user logged out',
     })
