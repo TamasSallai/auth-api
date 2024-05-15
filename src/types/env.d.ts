@@ -1,5 +1,5 @@
-import { SessionUser } from './types'
 import { FastifySessionObject } from '@fastify/session'
+import { SessionUser } from '../types'
 
 declare global {
   namespace NodeJS {
@@ -10,6 +10,7 @@ declare global {
       DATABASE_URL: string
       COOKIE_SECRET: string
       COOKIE_TTL: string
+      CORS_ORIGIN: string
     }
   }
 }
