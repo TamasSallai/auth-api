@@ -1,4 +1,5 @@
 import fastify, { FastifyServerOptions } from 'fastify'
+import fastifyCors from '@fastify/cors'
 import fastifyCookie from '@fastify/cookie'
 import fastifySession from '@fastify/session'
 import closeWithGrace from 'close-with-grace'
@@ -18,7 +19,10 @@ if (process.stdout.isTTY) {
   }
 }
 const app = fastify(opts)
-
+app.register(fastifyCors, {
+  origin: process.env.CORS_ORIGIN,
+  credentials: true,
+})
 app.register(fastifyCookie)
 app.register(fastifySession, {
   secret: process.env.COOKIE_SECRET,
