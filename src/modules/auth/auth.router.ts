@@ -22,7 +22,16 @@ const authRouter: FastifyPluginAsync = async (app) => {
         throw new ConflictError('User with email already exists')
       }
 
-      await createUser(data)
+      const registeredUser = await createUser(data)
+
+      req.session.user = {
+        id: registeredUser.id,
+        displayName: registeredUser.displayName,
+        firstName: registeredUser.firstName,
+        lastName: registeredUser.lastName,
+        email: registeredUser.email,
+        isVerified: registeredUser.isVerified,
+      }
 
       return reply.status(201).send({
         success: true,
