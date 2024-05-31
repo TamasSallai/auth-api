@@ -24,7 +24,7 @@ const authRouter: FastifyPluginAsync = async (app) => {
 
       const registeredUser = await createUser(data)
 
-      req.session.user = {
+      const userPayload = {
         id: registeredUser.id,
         displayName: registeredUser.displayName,
         firstName: registeredUser.firstName,
@@ -33,9 +33,11 @@ const authRouter: FastifyPluginAsync = async (app) => {
         isVerified: registeredUser.isVerified,
       }
 
+      req.session.user = userPayload
+
       return reply.status(201).send({
         success: true,
-        message: 'user created',
+        user: userPayload,
       })
     }
   )
@@ -56,7 +58,7 @@ const authRouter: FastifyPluginAsync = async (app) => {
         throw new UnauthorizedError('Invalid email or password')
       }
 
-      req.session.user = {
+      const userPayload = {
         id: user.id,
         displayName: user.displayName,
         firstName: user.firstName,
@@ -65,9 +67,11 @@ const authRouter: FastifyPluginAsync = async (app) => {
         isVerified: user.isVerified,
       }
 
+      req.session.user = userPayload
+
       return reply.status(200).send({
         success: true,
-        message: 'user logged in',
+        user: userPayload,
       })
     }
   )
